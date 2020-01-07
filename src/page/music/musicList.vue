@@ -1,0 +1,56 @@
+<template>
+    <div class="view-no">
+        <div class="view-no">
+            <x-header :left-options="{backText: ''}">{{detail.title}} <span slot="right">共{{detail.number || 0}}首</span></x-header>
+            <ul class="ranking nobanner">
+                <li v-for="(v, i) in rankList" :key="i">
+                    <router-link :to="{name: 'music_play', query: {songmid: v.data.songmid,songid: v.data.songid, name: v.data.albumname}}">
+                        <div style="font-size: 14px;">{{i+1}}</div>
+                        <div class="rank-R">
+                            <h6>{{v.data.albumname}}</h6>
+                            <span>{{v.data.albumdesc || v.data.singer[0].name}}</span>
+                        </div>
+                    </router-link>
+                </li>
+            </ul>
+        </div>
+    </div>
+</template>
+<script>
+// import { XHeader } from 'vant'
+export default {
+  name: 'Ranking',
+  // components: { XHeader },
+  data: function () {
+    return {
+      rankList: [],
+      detail: {
+        title: '排行榜详情',
+        number: 0
+      }
+    }
+  },
+  mounted: function () {
+    this.$SUNJIHONG.loading.show({
+      text: 'Loading...'
+    })
+    this.http.musicList({topid: this.$route.query.id})
+      .then(res => {
+        this.$SUNJIHONG.loading.hide()
+        if (res.code === 0) {
+          this.rankList = res.songlist
+          this.detail.title = res.topinfo.ListName
+          this.detail.number = res.cur_song_num
+        } else {
+          this.$SUNJIHONG.toast({
+            type: 'text',
+            text: res.message
+          })
+        }
+      })
+  }
+}
+</script>
+<style lang="sass" scoped>
+    @import "css/music"
+</style>

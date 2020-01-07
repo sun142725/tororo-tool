@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    hellow world
+    <router-view></router-view>
   </div>
 </template>
 
@@ -8,8 +8,6 @@
 
 export default {
   name: 'app',
-  components: {
-  }
 }
 </script>
 
