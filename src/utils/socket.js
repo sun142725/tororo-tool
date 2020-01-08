@@ -140,7 +140,7 @@ function mySocket () {
               ++reconnectCount;
               console.log(reconnectCount, mySocket.MAX_CONNECT_COUNT)
               if(reconnectCount >= mySocket.MAX_CONNECT_COUNT){
-                console.log('超过最大字顺');
+                console.log('超过最大重连次数');
                 socket.close();
               }
               log.warn('重新连接失败 reconnect_error' + err);
